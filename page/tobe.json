@@ -1,0 +1,17 @@
+{"group": "to be",
+"first":"sr",
+"second":"en",
+"dictionary":[
+    {"first":"ja sam", "second":"I am"},
+    {"first":"ti si", "second":"you are (sing.)"},
+    {"first":"on je", "second":"he/it (masculine) is"},
+    {"first":"ona je", "second":"she/it (feminine) is"},
+    {"first":"ono je", "second":"it (neuter) is"},
+    {"first":"mi smo", "second":"we are"},
+    {"first":"vi ste", "second":"you are (pl.)"},
+    {"first":"oni su", "second":"they (masculine) are"},
+    {"first":"one su", "second":"they (feminine) are"},
+    {"first":"ona su", "second":"they (neuter) are"}
+]
+
+}
