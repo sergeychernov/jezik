@@ -2,6 +2,7 @@ import { getText } from '@zos/i18n'
 import { getDeviceInfo } from "@zos/device";
 import { createWidget, widget, prop, text_style, event, align } from '@zos/ui'
 import { updateStatusBarTitle, redraw, deleteWidget } from '@zos/ui'
+import { Vibrator, VIBRATOR_SCENE_SHORT_LIGHT, VIBRATOR_SCENE_STRONG_REMINDER } from '@zos/sensor'
 
 
 import * as Styles from 'zosLoader:./index.[pf].layout.js'
@@ -37,6 +38,7 @@ const GAP = 8;
 
 
 Page({
+  //buzzer: new Buzzer(),
   state: {
     step:'question',
     question: 'Ja sam',
@@ -157,6 +159,9 @@ Page({
           answer.addEventListener(event.CLICK_UP, (info) =>{
             if(this.state.step === 'question'){
               this.state.step = {result:result, index}
+              const vibratorOption = {mode:result?VIBRATOR_SCENE_SHORT_LIGHT:VIBRATOR_SCENE_STRONG_REMINDER};
+              this.vibrator.start(vibratorOption);
+              console.log('vibratorOption', JSON.stringify(vibratorOption));
             }else{
               this.initState(tobe);
             }
@@ -177,6 +182,7 @@ Page({
     
   },
   build() {
+    this.vibrator = new Vibrator();
     this.initState( tobe);
     console.log('state', JSON.stringify(this.state));
     this.calcSizes();
