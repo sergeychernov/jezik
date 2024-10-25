@@ -51,9 +51,12 @@
     }
   },
   "i18n": {
+    "ru-RU":{
+      "appName": "Язык"
+    },
     "en-US": {
-      "appName": "Jezik Язык "
+      "appName": "Jezik"
     }
   },
-  "defaultLanguage": "en-US"
+  "defaultLanguage": "ru-RU"
 }

@@ -1,6 +1,6 @@
 {
   "name": "empty",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "@zeppos/device-types": "^3.0.0"
+  },
+  "dependencies": {
+    "@zeppos/zml": "^0.0.9"
   }
 }
