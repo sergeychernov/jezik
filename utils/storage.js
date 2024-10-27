@@ -1,6 +1,6 @@
 import { statSync, writeFileSync, readFileSync } from "@zos/fs";
 
-export default class LocalStorage {
+export class FileStorage {
     constructor(fileName = "", defaultData = {}) {
         this.DEFAULT_DATA = defaultData;
         this.fileName = fileName;
@@ -14,6 +14,13 @@ export default class LocalStorage {
       options: {
         encoding: "utf8",
       },
+    });
+  }
+
+  has(){
+    console.log('has')
+    return statSync({
+      path: this.fileName,
     });
   }
 

@@ -1,2 +1,11 @@
 msgid "example"
 msgstr "This is an example in device"
+
+msgid "settings"
+msgstr "Settings"
+
+msgid "native-language"
+msgstr "Native Language"
+
+msgid "foreign-language"
+msgstr "Foreign Language"

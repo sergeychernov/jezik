@@ -2,12 +2,14 @@ import { getText } from '@zos/i18n'
 import { getDeviceInfo } from "@zos/device";
 import { createWidget, widget, prop, text_style, event, align } from '@zos/ui'
 import { updateStatusBarTitle, redraw, deleteWidget } from '@zos/ui'
-import { Vibrator, VIBRATOR_SCENE_SHORT_LIGHT, VIBRATOR_SCENE_SHORT_STRONG } from '@zos/sensor'
-import { writeFileSync, statSync, readFileSync } from '@zos/fs'
-import { CURRENT_FILE_NAME, DEFAULT_SETTINGS } from '../constants';
+import { Vibrator, VIBRATOR_SCENE_SHORT_STRONG } from '@zos/sensor'
+
+import { CURRENT_FILE_NAME, DEFAULT_SETTINGS, SETTINGS_FILE_NAME } from '../constants';
 import { BasePage } from '@zeppos/zml/base-page'
 import * as Styles from 'zosLoader:./index.[pf].layout.js'
 import { getDiskInfo } from '@zos/device'
+import { push } from '@zos/router'
+import { FileStorage } from '../utils/storage'
 
 const tobe = {"group": "to be",
   "first":"sr",
@@ -57,18 +59,17 @@ Page(BasePage({
   db: {
     
   },
-  applySettings(settings) {
-    this.state.settings = settings;
-    this.updateStatusBarTitle();
-  },
+
   updateStatusBarTitle() {
-    console.log(this.state.strict, this.state.settings.nativeLanguage);
+    const settings = this.db.settings.get();
+    console.log(this.state.strict, settings.nativeLanguage);
     
-    this.state.strict ? updateStatusBarTitle(`${this.state.settings.nativeLanguage} - ${this.state.settings.foreignLanguage}`) : updateStatusBarTitle(`${this.state.settings.foreignLanguage} - ${this.state.settings.nativeLanguage}`)
+    this.state.strict ? updateStatusBarTitle(`${settings.nativeLanguage} - ${settings.foreignLanguage}`) : updateStatusBarTitle(`${settings.foreignLanguage} - ${settings.nativeLanguage}`)
   
   },
   initDB() {
-    this.db.current = new LocalStorage(CURRENT_FILE_NAME, []);
+    this.db.current = new FileStorage(CURRENT_FILE_NAME, []);
+    this.db.settings = new FileStorage(SETTINGS_FILE_NAME);
   },
   initState(table) {
     const state = this.state;
@@ -195,29 +196,31 @@ Page(BasePage({
     })
   },
   onInit() {
-    console.log('onInit');
+    console.log('index.onInit');
+    this.initDB();
+    if(!this.db.settings.has()){
+      push({
+        url: 'page/settings'
+      })
+      return;
+    }
+    console.log('2');
     this.vibrator = new Vibrator();
     this.calcSizes();
-
-    this.request({ method: 'SETTINGS' })
-      .then(({ result }) => {
-        this.applySettings(result);
-      })
-      .catch((result) => {
-        this.applySettings(DEFAULT_SETTINGS);
-      })
-    
     
     
     this.initState(tobe);
   },
   build() {
-    console.log('build')
+    console.log('index.build')
     this.draw();
     
   },
   onCall({ result }) {
     this.applySettings(result);
+    },
+    onDestroy() {
+      console.log('index.onDestroy')
     }
 }));
 
