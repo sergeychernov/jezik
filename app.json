@@ -28,7 +28,7 @@
       "module": {
         "page": {
           "pages": [
-            "page/index","page/settings"
+            "page/index","page/settings", "page/memorization", "page/start"
           ]
         },
         "app-side": {

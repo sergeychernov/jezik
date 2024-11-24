@@ -4,7 +4,7 @@ import { createWidget, widget, prop, text_style, event, align } from '@zos/ui'
 import { updateStatusBarTitle, redraw, deleteWidget } from '@zos/ui'
 import { Vibrator, VIBRATOR_SCENE_SHORT_STRONG } from '@zos/sensor'
 
-import { CURRENT_FILE_NAME, DEFAULT_SETTINGS, SETTINGS_FILE_NAME } from '../constants';
+import { CURRENT_FILE_NAME, DEFAULT_SETTINGS, SETTINGS_FILE_NAME, MEMORIZATION_FILE_NAME } from '../constants';
 import { BasePage } from '@zeppos/zml/base-page'
 import * as Styles from 'zosLoader:./index.[pf].layout.js'
 import { getDiskInfo } from '@zos/device'
@@ -70,6 +70,7 @@ Page(BasePage({
   initDB() {
     this.db.current = new FileStorage(CURRENT_FILE_NAME, []);
     this.db.settings = new FileStorage(SETTINGS_FILE_NAME);
+    this.db.memorization = new FileStorage(MEMORIZATION_FILE_NAME);
   },
   initState(table) {
     const state = this.state;
@@ -204,6 +205,13 @@ Page(BasePage({
       })
       return;
     }
+    if(!this.db.memorization.has()){
+      push({
+        url: 'page/start'
+      })
+      return;
+    }
+
     console.log('2');
     this.vibrator = new Vibrator();
     this.calcSizes();

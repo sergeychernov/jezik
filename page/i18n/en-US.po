@@ -4,6 +4,9 @@ msgstr "This is an example in device"
 msgid "settings"
 msgstr "Settings"
 
+msgid "start"
+msgstr "Start"
+
 msgid "native-language"
 msgstr "Native Language"
 

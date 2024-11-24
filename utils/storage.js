@@ -18,10 +18,9 @@ export class FileStorage {
   }
 
   has(){
-    console.log('has')
     return statSync({
       path: this.fileName,
-    });
+    }) !== undefined;
   }
 
   get() {
