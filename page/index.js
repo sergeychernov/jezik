@@ -10,6 +10,7 @@ import * as Styles from 'zosLoader:./index.[pf].layout.js'
 import { getDiskInfo } from '@zos/device'
 import { push } from '@zos/router'
 import { FileStorage } from '../utils/storage'
+import { MemorizationStorage } from '../utils/memorization-storage';
 
 const tobe = {"group": "to be",
   "first":"sr",
@@ -70,7 +71,7 @@ Page(BasePage({
   initDB() {
     this.db.current = new FileStorage(CURRENT_FILE_NAME, []);
     this.db.settings = new FileStorage(SETTINGS_FILE_NAME);
-    this.db.memorization = new FileStorage(MEMORIZATION_FILE_NAME);
+    this.memorizationStorage = new MemorizationStorage();
   },
   initState(table) {
     const state = this.state;
@@ -205,7 +206,7 @@ Page(BasePage({
       })
       return;
     }
-    if(!this.db.memorization.has()){
+    if(this.memorizationStorage.isEmpty()){
       push({
         url: 'page/start'
       })

@@ -49,6 +49,11 @@ export class MemorizationStorage {
     }
   }
 
+  isEmpty(){
+    const { queue, progress, done } = this.state;
+    return queue.length === 0 && progress.length === 0 && done.length === 0;
+  }
+
   progressLength(){
     return this.state.progress.reduce((acc, item)=>{
       return item.dictionary.length + acc
