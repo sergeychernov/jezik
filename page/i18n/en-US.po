@@ -7,6 +7,9 @@ msgstr "Settings"
 msgid "start"
 msgstr "Start"
 
+msgid "memorization"
+msgstr "Memorization"
+
 msgid "native-language"
 msgstr "Native Language"
 

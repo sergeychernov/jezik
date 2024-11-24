@@ -2,7 +2,7 @@
 import { MEMORIZATION_FILE_NAME } from '../constants';
 import { FileStorage } from './storage';
 
-const PROGRESS_MIN = 10;
+const PROGRESS_MIN_LENGTH = 10;
 
 export class MemorizationStorage {
   constructor() {
@@ -28,7 +28,7 @@ export class MemorizationStorage {
       console.log('language pack with this topic is already in done')
     } else {
       queue.push(languagePack);
-      if(this.progressLength() < PROGRESS_MIN){
+      if(this.progressLength() < PROGRESS_MIN_LENGTH){
         this.moveFromQueueToProgress();
       }
       this.save();
@@ -49,9 +49,25 @@ export class MemorizationStorage {
     }
   }
 
+  
+
+  getPack(){
+    const ratings = this.state.progress.map(pack=>(pack.dictionary.reduce((acc, {rating})=> acc + rating, 0)||1)/pack.dictionary.length);
+
+    const sum = ratings.reduce((a,i)=>a+i);
+
+    const weights = ratings.map(i=>(i/sum));
+
+  }
+
+
   isEmpty(){
     const { queue, progress, done } = this.state;
     return queue.length === 0 && progress.length === 0 && done.length === 0;
+  }
+
+  isEnough(){
+    return this.progressLength() >= PROGRESS_MIN_LENGTH;
   }
 
   progressLength(){

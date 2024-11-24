@@ -1,6 +1,9 @@
-import { MEMORIZATION_FILE_NAME } from '../constants';
 
-import { FileStorage } from '../utils/storage'
+import { MemorizationStorage } from '../utils/memorization-storage';
+import { getText } from '@zos/i18n';
+import createText from '../widgets/text-widget';
+
+const pageName = 'memorization';
 Page({
 
     state: {
@@ -11,15 +14,18 @@ Page({
     
     },
     initDB() {
-      this.db.memorization = new FileStorage(MEMORIZATION_FILE_NAME);
+      this.memorizationStorage = new MemorizationStorage();
     },
     onInit() {
-      console.log('memorization.onInit');
+        console.log(`${pageName}.onInit`);
       this.initDB();
     },
+    draw() {
+        
+        const { bottom: titleBottom} = createText(getText(pageName), {name:'title'});
+    },
     build() {
-      console.log('memorization.build')
-      
-      
+        console.log(`${pageName}.build`);
+        this.draw();
     }
   })

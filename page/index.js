@@ -9,7 +9,7 @@ import { BasePage } from '@zeppos/zml/base-page'
 import * as Styles from 'zosLoader:./index.[pf].layout.js'
 import { getDiskInfo } from '@zos/device'
 import { push } from '@zos/router'
-import { FileStorage } from '../utils/storage'
+import { FileStorage } from '../utils/storage';
 import { MemorizationStorage } from '../utils/memorization-storage';
 
 const tobe = {"group": "to be",
@@ -209,6 +209,13 @@ Page(BasePage({
     if(this.memorizationStorage.isEmpty()){
       push({
         url: 'page/start'
+      })
+      return;
+    }
+
+    if(this.memorizationStorage.isEnough()){
+      push({
+        url: 'page/memorization'
       })
       return;
     }
