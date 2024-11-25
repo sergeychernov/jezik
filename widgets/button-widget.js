@@ -19,6 +19,7 @@ function color(style){
 }
 
 export const createTextButtonWidget = (text, callback = ()=>{}, style = {}, position= {}, addText) => {
+  
     const {
         name = 'red',
         textSize = 14,
@@ -27,19 +28,19 @@ export const createTextButtonWidget = (text, callback = ()=>{}, style = {}, posi
         x = 16,
         y = 64,
         w = DEVICE_WIDTH,
-        h = Math.max(layout.height, 64)
     } = position;
     const layout = getTextLayout(text, {
         text_size: textSize,
         text_width: w - 2 * PADDING,
         wrapped: 1
       });
+    const {h = Math.max(layout.height, 64)
+    } = position;
       const addLayout = getTextLayout(addText, {
         text_size: textSize - 3,
         text_width: w - 2 * PADDING,
         wrapped: 1
       });
-      
       const buttonWidget = createWidget(widget.BUTTON, {
         x,
         y,
@@ -64,9 +65,10 @@ export const createTextButtonWidget = (text, callback = ()=>{}, style = {}, posi
         text,
       });
       textWidget.addEventListener(event.CLICK_UP, callback);
-      let addWidget;
+      const widgets = [buttonWidget, textWidget];
+      
       if(addLayout){
-        addWidget = createWidget(widget.TEXT, {
+        const addWidget = createWidget(widget.TEXT, {
             x,
             y:y+h/2,
             w,
@@ -79,6 +81,7 @@ export const createTextButtonWidget = (text, callback = ()=>{}, style = {}, posi
             text:addText,
           });
           addWidget.addEventListener(event.CLICK_UP, callback);
+          widgets.push(addWidget);
       }
-      return {buttonWidget, textWidget, addWidget, layout, bottom:(y+buttonH), right:(x + w)};
+      return {widgets, layout, bottom:(y+h), right:(x + w)};
 }

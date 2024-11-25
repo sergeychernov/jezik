@@ -8,7 +8,8 @@ import {createTextButtonWidget} from '../widgets/button-widget';
 import {GAP, PADDING, DEVICE_WIDTH, BAR_HEIGHT, DEVICE_HEIGHT} from '../widgets/constants';
 import { showToast } from '@zos/interaction'
 import { push } from '@zos/router'
-import { FileStorage } from '../utils/storage'
+import { FileStorage } from '../utils/storage';
+const pageName = 'memorization';
 Page({
 
     state: {
@@ -22,22 +23,21 @@ Page({
       this.db.settings = new FileStorage(SETTINGS_FILE_NAME);
     },
     onInit() {
-      console.log('settings.onInit');
+      console.log(`${pageName}.onInit`);
       this.initDB();
     },
     build() {
-      console.log('settings.build')
-      const { bottom: titleBottom} = createText(getText('settings'), {name:'title'});
-      
-      const { bottom: nativeTextBottom, right: nativeTextRight, layout: nativeTextLayout} = createText(getText('native-language'), {name: 'subtitle'}, {y:titleBottom+ GAP});
+      console.log(`${pageName}.build`);
+
+      const title = createText(getText('settings'), {name:'title'});
+      const { right: nativeTextRight} = createText(getText('native-language'), {name: 'subtitle'}, {y:title.bottom+ GAP});
       const nativeValues = [{name:'Английский', value:'en'}, {name:'Русский', value:'ru'}];
-      const selectNativeLanguage = createSelectWidget('Выбрать', {name: 'blue'}, {y:titleBottom+ GAP, x:nativeTextRight + GAP, w: DEVICE_WIDTH - nativeTextRight - GAP- PADDING});
+      const selectNativeLanguage = createSelectWidget('Выбрать', {name: 'blue'}, {y:title.bottom+ GAP, x:nativeTextRight + GAP, w: DEVICE_WIDTH - nativeTextRight - GAP- PADDING});
       
+      console.log('fl', JSON.stringify(selectNativeLanguage), getText('foreign-language'))
       const { bottom: foreignTextBottom, right: foreignTextRight, layout: foreignTextLayout} = createText(getText('foreign-language'), {name: 'subtitle'}, {y:selectNativeLanguage.bottom+ GAP});
-      
       const foreignValues = [{name:'Английский', value:'en'}, {name:'Сербский', value:'sr'}];
       const selectForeignLanguage = createSelectWidget('Выбрать',{name: 'blue'}, {y:selectNativeLanguage.bottom+ GAP, x:foreignTextRight + GAP, w: DEVICE_WIDTH - foreignTextRight - GAP- PADDING});
-      
       createTextButtonWidget('Сохранить', ()=>{
         if(!this.state.settings.nativeLanguage){
           showToast({
@@ -54,30 +54,28 @@ Page({
             url: 'page/index'
           });
         }
-      }, {name:"blue"}, {y:selectForeignLanguage.bottom+ GAP,x:PADDING,w:DEVICE_WIDTH - 2* PADDING})
+      }, {name:"blue"}, {y:selectForeignLanguage.bottom+ GAP,x:PADDING,w:DEVICE_WIDTH - 2* PADDING});
       createMenu(selectNativeLanguage,({name, value})=>{
-        selectNativeLanguage.buttonWidget.setProperty(prop.TEXT, 
+        selectNativeLanguage.widgets[1].setProperty(prop.TEXT, 
           name
         );
         this.state.settings = {...this.state.settings, nativeLanguage: value};
         
-        selectNativeLanguage.buttonWidget.setProperty(prop.MORE, {
+        selectNativeLanguage.widgets[1].setProperty(prop.MORE, {
           text: name
         })
       }, nativeValues,
       );
-
       createMenu(selectForeignLanguage,({name, value})=>{
-        selectForeignLanguage.buttonWidget.setProperty(prop.TEXT, 
+        selectForeignLanguage.widgets[1].setProperty(prop.TEXT, 
           name
         );
         this.state.settings = {...this.state.settings, foreignLanguage: value};
         
-        selectForeignLanguage.buttonWidget.setProperty(prop.MORE, {
+        selectForeignLanguage.widgets[1].setProperty(prop.MORE, {
           text: name
         })
       }, foreignValues);
-
       
     }
   })

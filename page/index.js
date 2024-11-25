@@ -220,7 +220,6 @@ Page(BasePage({
       return;
     }
 
-    console.log('2');
     this.vibrator = new Vibrator();
     this.calcSizes();
     

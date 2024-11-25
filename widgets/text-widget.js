@@ -17,6 +17,7 @@ function fontSize(style){
 }
 
 const createTextWidget = (text, style = {}, position= {}) => {
+
     const {
         name = 'normal',
         color = 0xffffff
@@ -30,7 +31,7 @@ const createTextWidget = (text, style = {}, position= {}) => {
         text_size: fontSize(name),
         text_width: w,
         wrapped: 1
-      })
+      });
     const textWidget = createWidget(widget.TEXT, {
         x,
         y,
@@ -42,7 +43,7 @@ const createTextWidget = (text, style = {}, position= {}) => {
         text_style: text_style.WRAP,
         text
       });
-      return {textWidget, layout, bottom:(y+layout.height), right:(x + layout.width)};
+      return {widgets: [textWidget], layout, bottom:(y+layout.height), right:(x + layout.width)};
 }
 
 export default createTextWidget;
