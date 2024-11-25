@@ -9,6 +9,7 @@ import { MemorizationStorage } from '../utils/memorization-storage';
 
 import {GAP, PADDING, DEVICE_WIDTH} from '../widgets/constants';
 
+import { push } from '@zos/router'
 
 const pageName = 'start';
 
@@ -41,7 +42,9 @@ Page({
         createTextButtonWidget(DEMO[foreignLanguage][nativeLanguage].topic, ()=>{
           const languagePack = DEMO[foreignLanguage][nativeLanguage];
           this.memorizationStorage.addLanguagePack(languagePack);
-          
+          push({
+            url: 'page/index'
+          })
           
   
   

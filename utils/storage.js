@@ -1,4 +1,4 @@
-import { statSync, writeFileSync, readFileSync } from "@zos/fs";
+import { statSync, writeFileSync, readFileSync, rmSync } from "@zos/fs";
 
 export class FileStorage {
     constructor(fileName = "", defaultData = {}) {
@@ -21,6 +21,11 @@ export class FileStorage {
     return statSync({
       path: this.fileName,
     }) !== undefined;
+  }
+
+  clear(){
+    rmSync({
+      path: this.fileName});
   }
 
   get() {

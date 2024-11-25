@@ -1,6 +1,6 @@
 import { createWidget, widget, align, prop, text_style, event } from '@zos/ui';
 import { getTextLayout } from '@zos/ui'
-import { DEVICE_WIDTH } from './constants';
+import { DEVICE_WIDTH, PADDING, GAP } from './constants';
 
 function color(style){
     switch(style){
@@ -18,31 +18,67 @@ function color(style){
     }
 }
 
-export const createTextButtonWidget = (text, callback = ()=>{}, style = {}, position= {}) => {
+export const createTextButtonWidget = (text, callback = ()=>{}, style = {}, position= {}, addText) => {
     const {
-        name = 'primary'
+        name = 'red',
+        textSize = 14,
     } = style;
     const {
         x = 16,
         y = 64,
         w = DEVICE_WIDTH,
+        h = Math.max(layout.height, 64)
     } = position;
     const layout = getTextLayout(text, {
-        text_size: 14,
-        text_width: w,
+        text_size: textSize,
+        text_width: w - 2 * PADDING,
         wrapped: 1
-      })
-      const buttonH = Math.max(layout.height, 64);
+      });
+      const addLayout = getTextLayout(addText, {
+        text_size: textSize - 3,
+        text_width: w - 2 * PADDING,
+        wrapped: 1
+      });
+      
       const buttonWidget = createWidget(widget.BUTTON, {
         x,
         y,
         w,
-        h: buttonH,
-        text_size: 14,
-        text,
+        h,
+        //text_size: 14,
+        //text,
         radius: 8,
         ...color(name),
         click_func:callback
       });
-      return {buttonWidget, layout, bottom:(y+buttonH), right:(x + w)};
+      const textWidget = createWidget(widget.TEXT, {
+        x,
+        y,
+        w,
+        h:addLayout?h/2:h,
+        color: 0xffffff,
+        text_size: textSize,
+        align_h: align.CENTER_H,
+        align_v: align.CENTER_V,
+        text_style: text_style.WRAP,
+        text,
+      });
+      textWidget.addEventListener(event.CLICK_UP, callback);
+      let addWidget;
+      if(addLayout){
+        addWidget = createWidget(widget.TEXT, {
+            x,
+            y:y+h/2,
+            w,
+            h:h/2,
+            color: 0xffffff,
+            text_size: textSize-3,
+            align_h: align.CENTER_H,
+            align_v: align.CENTER_V,
+            text_style: text_style.WRAP,
+            text:addText,
+          });
+          addWidget.addEventListener(event.CLICK_UP, callback);
+      }
+      return {buttonWidget, textWidget, addWidget, layout, bottom:(y+buttonH), right:(x + w)};
 }

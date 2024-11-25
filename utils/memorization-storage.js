@@ -1,12 +1,14 @@
 
 import { MEMORIZATION_FILE_NAME } from '../constants';
 import { FileStorage } from './storage';
+import {weightRandom} from './weight-random';
 
 const PROGRESS_MIN_LENGTH = 10;
 
 export class MemorizationStorage {
   constructor() {
       this.db = new FileStorage(MEMORIZATION_FILE_NAME);
+      
       if(this.db.has()){
         this.state = this.db.get();
       } else {
@@ -44,20 +46,46 @@ export class MemorizationStorage {
         topic,
         dictionary:dictionary.map(([from, to, adds={}])=>{
           const {add, ex} = adds;
-          return {from, to, add, ex, rating: 0} })
+          const [addFrom, addTo] = add||[];
+          return {from, to, addFrom, addTo, ex, rating: 0} })
       });
     }
   }
 
-  
+  sendResult(card, correct){
+    console.log(correct);
+    if(correct)
+      card.rating = card.rating + 1;
+    else
+      card.rating = Math.max(card.rating - 1, 0);
+    console.log(JSON.stringify(card));
+    this.save();
+  }
 
-  getPack(){
-    const ratings = this.state.progress.map(pack=>(pack.dictionary.reduce((acc, {rating})=> acc + rating, 0)||1)/pack.dictionary.length);
+  getRandomPack(){
+    const ratings = this.state.progress.map((pack)=> {
+      const rating = pack.dictionary.reduce((acc, {rating})=> acc + rating, 0)/pack.dictionary.length;
+      return Math.max(1,Math.min(4, rating));
+    });
+    const index = weightRandom(ratings);
+    return this.state.progress[index];
+  }
 
-    const sum = ratings.reduce((a,i)=>a+i);
-
-    const weights = ratings.map(i=>(i/sum));
-
+  getRandomCards(num){
+    const pack = this.getRandomPack();
+    let dictionary = pack.dictionary
+    .filter((i)=>i.rating < 4)
+    .map(i=>({order: Math.max(1,Math.min(4, i.rating))*Math.random(),i}))
+    .sort((a,b)=>  a.order - b.order)
+    .map(i=>i.i);
+    if(dictionary.length < num ){
+      const add = pack.dictionary
+      .filter((i)=>i.rating >= 4)
+      .sort(()=> Math.random < 0.5)
+      .slice(0, num - dictionary.length);
+      dictionary.push(...add);
+    }
+    return dictionary.slice(0, num);
   }
 
 
@@ -70,9 +98,21 @@ export class MemorizationStorage {
     return this.progressLength() >= PROGRESS_MIN_LENGTH;
   }
 
-  progressLength(){
+  progressLength(onlyActive = false){
     return this.state.progress.reduce((acc, item)=>{
-      return item.dictionary.length + acc
+      if(onlyActive){
+        return item.dictionary.filter(i=>i.rating < 4).length + acc;
+      }else{
+        return item.dictionary.length + acc;
+      }
+    },0)
+  }
+
+  progressRating(){
+    return this.state.progress.reduce((acc, item)=>{
+      
+      return item.dictionary.reduce((a,i)=>i.rating + a, 0) + acc;
+
     },0)
   }
 

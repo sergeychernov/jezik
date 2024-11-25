@@ -17,15 +17,15 @@ export const DEMO = {
             topic:"biti present tense",
             dictionary:[
                 ["ja sam", "I am"],
-                ["ti si", "you are", {add:"sing."}],
-                ["on je", "he/it is", {add:"masculine"}],
-                ["ona je", "she/it is", {add:"feminine"}],
-                ["ono je", "it is", {add:"neuter"}],
+                ["ti si", "you are", {add:[,"sing."]}],
+                ["on je", "he/it is", {add:[,"masculine"]}],
+                ["ona je", "she/it is", {add:[,"feminine"]}],
+                ["ono je", "it is", {add:[,"neuter"]}],
                 ["mi smo", "we are"],
-                ["vi ste", "you are", {add:"pl."}],
-                ["oni su", "they are", {add:"masculine"}],
-                ["one su", "they are", {add:"feminine"}],
-                ["ona su", "they are", {add:"neuter"}]
+                ["vi ste", "you are", {add:[,"pl."]}],
+                ["oni su", "they are", {add:[,"masculine"]}],
+                ["one su", "they are", {add:[,"feminine"]}],
+                ["ona su", "they are", {add:[,"neuter"]}]
             ]
         },
         ru:{
@@ -38,9 +38,9 @@ export const DEMO = {
                 ["ono je", "оно есть"],
                 ["mi smo", "мы есть"],
                 ["vi ste", "вы есть"],
-                ["oni su", "они есть", {add:"муж."}],
-                ["one su", "они есть", {add:"жен."}],
-                ["ona su", "они есть", {add:"ср."}]
+                ["oni su", "они есть", {add:[,"муж."]}],
+                ["one su", "они есть", {add:[,"жен."]}],
+                ["ona su", "они есть", {add:[,"ср."]}]
             ]
         },
     }
