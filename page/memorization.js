@@ -76,7 +76,6 @@ Page({
       const buttonY = questionBottom + GAP + (index >> 1) * (buttonHeight + GAP);
       if (step === 'question' || step.index === index || correct) {
         const { widgets: buttonWidgets, } = createTextButtonWidget(strict ? answer.to : answer.from, () => {
-          this.widgets.push(buttonWidgets);
           if (step === 'question') {
             this.makeResult(answers, index, correct);
           }
@@ -90,6 +89,7 @@ Page({
           w: buttonWidth,
           h: buttonHeight
         }, strict ? answer.addTo : answer.addFrom);
+        this.widgets.push(buttonWidgets);
 
       }
 

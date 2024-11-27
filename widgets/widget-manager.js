@@ -17,7 +17,10 @@ export class WidgetManager {
 
         if (widget) {
             if (widget.length > 0) {
+                console.log('push+', this.widgets.length)
+                console.log('push=', widget.length)
                 this.widgets.push(...widget)
+                console.log('push', this.widgets.length)
             } else {
                 this.widgets.push(widget)
             }
