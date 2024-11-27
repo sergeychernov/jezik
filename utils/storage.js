@@ -1,11 +1,11 @@
 import { statSync, writeFileSync, readFileSync, rmSync } from "@zos/fs";
 
 export class FileStorage {
-    constructor(fileName = "", defaultData = {}) {
-        this.DEFAULT_DATA = defaultData;
-        this.fileName = fileName;
-        this.contentObj = this.DEFAULT_DATA;
-    }
+  constructor(fileName = "", defaultData = {}) {
+    this.DEFAULT_DATA = defaultData;
+    this.fileName = fileName;
+    this.contentObj = this.DEFAULT_DATA;
+  }
 
   set(obj) {
     writeFileSync({
@@ -17,15 +17,16 @@ export class FileStorage {
     });
   }
 
-  has(){
+  has() {
     return statSync({
       path: this.fileName,
     }) !== undefined;
   }
 
-  clear(){
+  clear() {
     rmSync({
-      path: this.fileName});
+      path: this.fileName
+    });
   }
 
   get() {

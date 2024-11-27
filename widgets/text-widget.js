@@ -3,8 +3,8 @@ import { getDeviceInfo } from "@zos/device";
 import { getTextLayout } from '@zos/ui'
 
 const { width: DEVICE_WIDTH } = getDeviceInfo();
-function fontSize(style){
-    switch(style){
+function fontSize(style) {
+    switch (style) {
         case 'title':
             return 20;
         case 'subtitle':
@@ -16,7 +16,7 @@ function fontSize(style){
     }
 }
 
-const createTextWidget = (text, style = {}, position= {}) => {
+const createTextWidget = (text, style = {}, position = {}) => {
 
     const {
         name = 'normal',
@@ -31,7 +31,7 @@ const createTextWidget = (text, style = {}, position= {}) => {
         text_size: fontSize(name),
         text_width: w,
         wrapped: 1
-      });
+    });
     const textWidget = createWidget(widget.TEXT, {
         x,
         y,
@@ -42,8 +42,8 @@ const createTextWidget = (text, style = {}, position= {}) => {
         align_v: align.CENTER_V,
         text_style: text_style.WRAP,
         text
-      });
-      return {widgets: [textWidget], layout, bottom:(y+layout.height), right:(x + layout.width)};
+    });
+    return { widgets: [textWidget], layout, bottom: (y + layout.height), right: (x + layout.width) };
 }
 
 export default createTextWidget;
